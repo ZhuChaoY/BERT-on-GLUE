@@ -26,12 +26,13 @@ MNLI/ : download the train.txt from https://gluebenchmark.com/tasks
 | **QNLI**  |   ACC  | 0.891 | 0.918 |
 | **QQP**   | ACC&F1 | 0.894 | |
 | **MNLI**  |   ACC  | 0.835 | |
+| **Mean (without WNLI)**  | \ | 0.822 | |
+| **Mean**  | \ | 0.793 | |
 
-
-**DATASET** from {WNLI, RTE, MRPC, STS-B, CoLA, SST-2, QNLI, QQP, MNLI}
 ```
 python Run_GLUE.py --model base --dataset [DATASET] --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
 ```
 python Run_GLUE.py --model large --dataset [DATASET] --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
+**[DATASET]** from {WNLI, RTE, MRPC, STS-B, CoLA, SST-2, QNLI, QQP, MNLI}

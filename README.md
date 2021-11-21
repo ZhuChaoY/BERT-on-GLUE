@@ -14,8 +14,8 @@ QQP/ : upzip the train.zip
 MNLI/ : download the train.txt from https://gluebenchmark.com/tasks  
 **else**/ : all ready
 
-## Results (on dev) 
-|           | **Index** | **base** |**large**|
+## Results (on GLUE dev) 
+|**Dataset**| **Index** | **base** |**large**|
 |     --    |   --   |    --   |    --    | 
 | **WNLI**  |   ACC  | 0.563 | |
 | **RTE**   |   ACC  | 0.693 | |

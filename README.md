@@ -7,8 +7,8 @@ An implementation of BERT finetuning on GLUE dataset by tensorflow.
 
 ## File
 ### Pretrained BERT
-base/  : download from https://storage.googleapis.com/bert_models/2018_10_18/uncased_L-12_H-768_A-12.zip  
-large/ : download from https://storage.googleapis.com/bert_models/2018_10_18/uncased_L-24_H-1024_A-16.zip  
+base/model.ckpt  : download from https://storage.googleapis.com/bert_models/2018_10_18/uncased_L-12_H-768_A-12.zip  
+large/model.ckpt : download from https://storage.googleapis.com/bert_models/2018_10_18/uncased_L-24_H-1024_A-16.zip  
 ### GLUE
 QQP/ : upzip the train.zip  
 MNLI/ : download the train.txt from https://gluebenchmark.com/tasks  

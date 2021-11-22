@@ -1,33 +1,42 @@
 import os
 import pickle
+import jsonlines
 import numpy as np
 import Tokenization as tkz
 
 
-task_dict = \
-    {'CoLA': {'label_list': ['0', '1'],
-              'length': 4, 'idx_a': 3, 'idx_b': None, 'idx_label': 1},
-     'MNLI': {'label_list': ['entailment', 'neutral', 'contradiction'],
-              'length': 11, 'idx_a': 8, 'idx_b': 9, 'idx_label': -1},
+GLUE_dict = \
+    {'WNLI': {'label_list': ['0', '1'],
+              'length': 4, 'idx_a': 1, 'idx_b': 2, 'idx_label': -1},
+     'RTE': {'label_list': ['not_entailment', 'entailment'],
+             'length': 4, 'idx_a': 1, 'idx_b': 2, 'idx_label': -1},
      'MRPC': {'label_list': ['0', '1'],
               'length': 5, 'idx_a': 3, 'idx_b': 4, 'idx_label': 0},
+     'STS-B': {'label_list': [0.0],
+               'length': 10, 'idx_a': 7, 'idx_b': 8, 'idx_label': -1},
+     'CoLA': {'label_list': ['0', '1'],
+              'length': 4, 'idx_a': 3, 'idx_b': None, 'idx_label': 1},
+     'SST-2': {'label_list': ['0', '1'],
+               'length': 2, 'idx_a': 0, 'idx_b': None, 'idx_label': -1},
      'QNLI': {'label_list': ['not_entailment', 'entailment'],
               'length': 4, 'idx_a': 1, 'idx_b': 2, 'idx_label': -1},
      'QQP': {'label_list': ['0', '1'],
              'length': 6, 'idx_a': 3, 'idx_b': 4, 'idx_label': -1},
-     'RTE': {'label_list': ['not_entailment', 'entailment'],
-             'length': 4, 'idx_a': 1, 'idx_b': 2, 'idx_label': -1},
-     'SST-2': {'label_list': ['0', '1'],
-               'length': 2, 'idx_a': 0, 'idx_b': None, 'idx_label': -1},
-     'STS-B': {'label_list': [0.0],
-               'length': 10, 'idx_a': 7, 'idx_b': 8, 'idx_label': -1},
-     'WNLI': {'label_list': ['0', '1'],
-              'length': 4, 'idx_a': 1, 'idx_b': 2, 'idx_label': -1}}
+     'MNLI': {'label_list': ['entailment', 'neutral', 'contradiction'],
+              'length': 11, 'idx_a': 8, 'idx_b': 9, 'idx_label': -1}
+     }
+
+superGLUE_dict = \
+    {'CB': {'label_list': ['entailment', 'neutral', 'contradiction'],
+            'title_a': 'premise', 'title_b': 'hypothesis'},
+     'BoolQ': {'label_list': ['True', 'False'],
+              'title_a': 'passage', 'title_b': 'question'}
+     }
 
 
-def Process_GLUE(dataset, len_d):
-    d = task_dict[dataset]          
-    p = 'GLUE/{}/_inputs-{}.data'.format(dataset, len_d)
+def Process_GLUE(task, dataset, len_d):
+    d = eval(task + '_dict[dataset]')        
+    p = '{}/{}/#inputs-{}.data'.format(task, dataset, len_d)
     if os.path.exists(p):
         with open(p, 'rb') as file:
             inputs = pickle.load(file)
@@ -35,7 +44,10 @@ def Process_GLUE(dataset, len_d):
         tokenizer = tkz.FullTokenizer('Pretrained BERT/vocab.txt')  
         inputs = {}
         for key in ['train', 'dev']:
-            inputs[key] = glue_tasks(dataset, key, len_d, tokenizer, d)
+            if task == 'GLUE':
+                inputs[key] = glue_tasks(dataset, key, len_d, tokenizer, d)
+            elif task == 'superGLUE':
+                inputs[key] = superglue_tasks(dataset, key, len_d, tokenizer, d)
         with open(p, 'wb') as file:
             pickle.dump(inputs, file)
             
@@ -43,7 +55,7 @@ def Process_GLUE(dataset, len_d):
 
 
 def glue_tasks(dataset, key, len_d, tokenizer, d):    
-    with open('GLUE/{}/{}.txt'.format(dataset, key),
+    with open('GLUE/{}/{}.txt'.format(dataset, key), 
               encoding = 'mac_roman') as file:
         lines = file.readlines()
         
@@ -64,12 +76,30 @@ def glue_tasks(dataset, key, len_d, tokenizer, d):
                                                tokenizer, d['label_list']))
         else:
             label = float(label)
-            if label >= 0.0 and label <= 5.0:
+            if 0.0 <= label <= 5.0:
                 inputs.append(convert_to_input(text_a, text_b, label, len_d,
                                                tokenizer, None))
             
     return inputs
     
+
+def superglue_tasks(dataset, key, len_d, tokenizer, d):    
+    lines = []
+    with jsonlines.open('superGLUE/' + dataset + '/' + key + '.jsonl') as reader:
+        for line in reader:
+            lines.append(line)
+        
+    inputs = []
+    for line in lines:
+        text_a = tkz.convert_to_unicode(line[d['title_a']])
+        text_b = tkz.convert_to_unicode(line[d['title_b']])
+        label = tkz.convert_to_unicode(str(line['label']))        
+        if label in d['label_list']:
+            inputs.append(convert_to_input(text_a, text_b, label, len_d,
+                                           tokenizer, d['label_list']))
+            
+    return inputs
+
 
 def convert_to_input(text_a, text_b, label, len_d, tokenizer, label_list):
     tokens_a = tokenizer.tokenize(text_a)
@@ -110,4 +140,5 @@ def convert_to_input(text_a, text_b, label, len_d, tokenizer, label_list):
         return ids, mask, segment, label
 
 
-#a, b = Process_GLUE('MRPC', 128)
+#a, b = Process_GLUE('GLUE', 'MRPC', 128)
+#c, d = Process_GLUE('superGLUE', 'BoolQ', 192)

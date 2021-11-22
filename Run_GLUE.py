@@ -8,7 +8,10 @@ parser = argparse.ArgumentParser(description = 'Run GLUE')
 
 parser.add_argument('--model', type = str, default = 'base',
                     help = 'model name') # 'base' or 'large'
-# 'WNLI', 'RTE', 'MRPC', 'STS-B', 'CoLA', 'SST-2', 'QNLI', 'QQP', 'MNLI'
+parser.add_argument('--task', type = str, default = 'GLUE',
+                    help = 'task name') # 'GLUE' or 'superGLUE'
+#GLUE: 'WNLI', 'RTE', 'MRPC', 'STS-B', 'CoLA', 'SST-2', 'QNLI', 'QQP', 'MNLI'
+#superGLUE: 'CB', 'BoolQ'
 parser.add_argument('--dataset', type = str, default = 'WNLI',
                     help = 'dataset name') 
 parser.add_argument('--len_d', type = int, default = 128,

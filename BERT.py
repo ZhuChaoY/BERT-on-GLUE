@@ -30,8 +30,8 @@ class BERT():
                 exec('self.{} = {}'.format(key, value))
 
         self.model_dir = 'Pretrained BERT/' + self.model + '/'
-        self.out_dir = 'GLUE/{}/BERT-{}-{}/'.format(self.dataset, self.model,
-                                                    self.len_d)
+        self.out_dir = '{}/{}/BERT-{}-{}/'.format(self.task, self.dataset,
+                                                  self.model, self.len_d)
         if not exists(self.out_dir):
             makedirs(self.out_dir)
                             
@@ -49,8 +49,8 @@ class BERT():
             
         self.initializer = tf.truncated_normal_initializer(self.init_range)
 
-        print('\n\n' + '==' * 4 + ' < BERT-{} > && < {} > '.format(self.model,
-             self.dataset) + '==' * 4)                 
+        print('\n\n' + '==' * 4 + ' < BERT-{} > && < {}-{} > '.format( \
+             self.model, self.task, self.dataset) + '==' * 4)                 
         self.load_data()
         self.construct_model()
         
@@ -58,7 +58,7 @@ class BERT():
     def load_data(self):
         """Loading train and dev GLUE inputs."""
         
-        inputs, self.n_label = Process_GLUE(self.dataset, self.len_d)
+        inputs, self.n_label = Process_GLUE(self.task, self.dataset, self.len_d)
         for key in ['train', 'dev']:
             exec('self.' + key + " = inputs['" + key + "']")
             exec('self.n_' + key + ' = len(self.' + key + ')')
@@ -117,7 +117,7 @@ class BERT():
                              initializer = self.initializer)
             em_out += tf.reshape(tf.slice(position_table, [0, 0],
                       [self.len_d, -1]), [1, self.len_d, self.hidden]) 
-            em_out = self.dropout_layer(self.norm_layer(em_out))
+            em_out = self.dropout_layer(norm_layer(em_out))
 
         with tf.variable_scope('encoder'): #(B * L, H)
             prev_out = tf.reshape(em_out, [-1, self.hidden]) #(B * L, H)    
@@ -160,7 +160,7 @@ class BERT():
     
             with tf.variable_scope('output'): #(B * L, H)
                 att_out = self.dense_layer(self_out, self.hidden)
-                att_out = self.norm_layer(self.dropout_layer(att_out) + \
+                att_out = norm_layer(self.dropout_layer(att_out) + \
                                           prev_out)
         
         return att_out  
@@ -173,7 +173,7 @@ class BERT():
             mid_out = self.dense_layer(att_out, self.intermediate, None, gelu)
         with tf.variable_scope('output'): #(B * L, H)
             prev_out = self.dense_layer(mid_out, self.hidden)
-            prev_out = self.norm_layer(self.dropout_layer(prev_out) + att_out)
+            prev_out = norm_layer(self.dropout_layer(prev_out) + att_out)
         
         return prev_out
         
@@ -199,20 +199,6 @@ class BERT():
             self.loss = tf.reduce_sum(-tf.reduce_sum(tf.one_hot(self.label,
                         self.n_label) * tf.nn.log_softmax(logits, -1), -1))  
         
-                
-    def norm_layer(self, _input):
-        return tf.contrib.layers.layer_norm(inputs = _input,
-               begin_norm_axis = -1, begin_params_axis = -1) 
-    
-    
-    def dropout_layer(self, _input):
-        return tf.nn.dropout(_input, self.keep)
-    
-    
-    def dense_layer(self, _input, out_dim, name = None, activation = None):
-        return tf.layers.dense(_input, out_dim, activation, name = name,
-                               kernel_initializer = self.initializer)
-    
     
     def _train(self, sess):
         """
@@ -220,18 +206,19 @@ class BERT():
         (2) Evaluate for dev dataset each epoch.
         """
         
-        train_batches = self.get_batches('train')
+        dev_batches = self.get_batches('dev')
         print('    EPOCH DEV-KPI  time   TIME (min)')
         result = {'args': self.args}
         temp_kpi, KPI = [], []
         t0 = t1 = time.time()
         for ep in range(self.epoches):
+            train_batches = self.get_batches('train')
             for ids, mask, segment, label in train_batches:
                 feed_dict = {self.ids: ids, self.mask: mask,
                              self.segment: segment, self.label: label,
                              self.keep: 1.0 - self.dropout}
                 _ = sess.run(self.train_op, feed_dict)
-            kpi = self.cal_kpi(sess)    
+            kpi = self.cal_kpi(sess, dev_batches)    
             
             _t = time.time()
             print('    {:^5} {:^7.3f} {:^6.2f} {:^6.2f}'.format(ep + 1, kpi,
@@ -260,19 +247,10 @@ class BERT():
             print('\n    Early stop at epoch of {} !'.format(len(KPI)))
                         
     
-    def _predict(self, sess):
-        """Prediction process."""
-        
-        dev_kpi = self.cal_kpi(sess)
-        print('    DEV-KPI : {}'.format(dev_kpi))
-            
-        
-    def cal_kpi(self, sess):
+    def cal_kpi(self, sess, dev_batches):
         """Calculate kpi for GLUE dataset."""
         
-        dev_batches = self.get_batches('dev')
-
-        Pre = None
+        Pre, Label = None, None
         for ids, mask, segment, label in dev_batches:
             feed_dict = {self.ids: ids, self.mask: mask,
                          self.segment: segment, self.keep: 1.0}
@@ -290,7 +268,7 @@ class BERT():
             kpi = round(np.corrcoef(Label, Pre)[0][1], 4)
         else:
             acc = sum(Label == Pre) / Pre.shape[0]
-            if self.dataset in ['MRPC', 'QQP']:
+            if self.dataset in ['MRPC', 'QQP', 'CB']:
                 f1 = sm.f1_score(Label, Pre)
                 kpi = round((acc + f1) / 2, 4)
             else:
@@ -314,13 +292,19 @@ class BERT():
             ids = np.vstack([x[0] for x in idx])
             mask = np.vstack([x[1] for x in idx])
             segment = np.vstack([x[2] for x in idx])
-            if key != 'test':
-                label = np.array([x[3] for x in idx])
-                batches.append((ids, mask, segment, label))
-            else:
-                batches.append((ids, mask, segment))
+            label = np.array([x[3] for x in idx])
+            batches.append((ids, mask, segment, label))
                 
         return batches
+    
+    
+    def _predict(self, sess):
+        """Prediction process."""
+        
+        with open(self.out_dir + 'result.json') as file: 
+            result = json.load(file) 
+        print('    DEV-KPI: {:.3f} (epoch: {})'.format(result['dev-kpi'][-1],
+                                                       result['best-epoch']))
     
     
     def initialize_variables(self, mode):
@@ -366,6 +350,20 @@ class BERT():
             with tf.Session(config = config) as sess:
                 tf.global_variables_initializer().run()  
                 self._predict(sess)
+    
+    
+    def dropout_layer(self, _input):
+        return tf.nn.dropout(_input, self.keep)
+    
+    
+    def dense_layer(self, _input, out_dim, name = None, activation = None):
+        return tf.layers.dense(_input, out_dim, activation, name = name,
+                               kernel_initializer = self.initializer)
+    
+    
+def norm_layer(_input):
+    return tf.contrib.layers.layer_norm(inputs = _input,
+           begin_norm_axis = -1, begin_params_axis = -1) 
     
     
 def gelu(x):

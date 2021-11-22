@@ -4,7 +4,7 @@ An implementation of BERT finetuning on GLUE and superGLUE(only CB and BoolQ) da
 ## Reference
 (1) **BERT**: [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/pdf/1810.04805.pdf) (Code: https://github.com/google-research/bert)   
 (2) **GLUE**: [GLUE: A MULTI-TASK BENCHMARK AND ANALYSIS PLATFORM FOR NATURAL LANGUAGE UNDERSTANDING](https://arxiv.org/pdf/1804.07461v2.pdf)   
-(3) **superGlUE**: [SuperGLUE: A Stickier Benchmark for General-Purpose Language Understanding Systems](https://arxiv.org/pdf/1905.00537v3.pdf)   
+(3) **superGLUE**: [SuperGLUE: A Stickier Benchmark for General-Purpose Language Understanding Systems](https://arxiv.org/pdf/1905.00537v3.pdf)   
 
 ## File
 ### Pretrained BERT
@@ -34,10 +34,10 @@ all ready
 | **Mean**  | \ | 0.793 | |
 
 ```
-python Run_GLUE.py --model base --dataset [DATASET] --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+python Run_GLUE.py --model base --task GLUE --dataset [DATASET] --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
 ```
-python Run_GLUE.py --model large --dataset [DATASET] --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+python Run_GLUE.py --model large --task GLUE --dataset [DATASET] --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
 **[DATASET]** from {WNLI, RTE, MRPC, STS-B, CoLA, SST-2, QNLI, QQP, MNLI}
 
@@ -45,5 +45,17 @@ python Run_GLUE.py --model large --dataset [DATASET] --len_d 128 --dropout 0.1 -
 ### superGLUE (dev) 
 |**Dataset**| **Index** | **base** |**large**|
 |     --    |   --   |    --   |    --    | 
-| **CB**    |   ACC  | | |
-| **BoolQ** | ACC&F1 | | |
+| **CB**    | ACC&F1 | | |
+| **BoolQ** |   ACC  | | |
+```
+python Run_GLUE.py --model base --task superGLUE --dataset CB --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+```
+```
+python Run_GLUE.py --model large --task superGLUE --dataset CB --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+```
+```
+python Run_GLUE.py --model base --task superGLUE --dataset BoolQ --len_d 192 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+```
+```
+python Run_GLUE.py --model large --task superGLUE --dataset BoolQ --len_d 192 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+```

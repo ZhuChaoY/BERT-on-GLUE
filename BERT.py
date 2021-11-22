@@ -269,7 +269,10 @@ class BERT():
         else:
             acc = sum(Label == Pre) / Pre.shape[0]
             if self.dataset in ['MRPC', 'QQP', 'CB']:
-                f1 = sm.f1_score(Label, Pre)
+                if self.dataset != 'CB':
+                    f1 = sm.f1_score(Label, Pre)
+                else:
+                    f1 = sm.f1_score(Label, Pre, average = 'micro')
                 kpi = round((acc + f1) / 2, 4)
             else:
                 kpi = round(acc, 4)

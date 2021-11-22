@@ -34,10 +34,10 @@ all ready
 | **Mean**  | \ | | |
 
 ```
-python Run_GLUE.py --model base --task GLUE --dataset [DATASET] --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+python Run_GLUE.py --model base --task GLUE --dataset [DATASET] --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
 ```
-python Run_GLUE.py --model large --task GLUE --dataset [DATASET] --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+python Run_GLUE.py --model large --task GLUE --dataset [DATASET] --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
 **[DATASET]** from {WNLI, RTE, MRPC, STS-B, CoLA, SST-2, QNLI, QQP, MNLI}
 
@@ -45,17 +45,12 @@ python Run_GLUE.py --model large --task GLUE --dataset [DATASET] --len_d 128 --d
 ### superGLUE (dev) 
 |**Dataset**| **Index** | **base** |**large**|
 |     --    |   --   |    --   |    --    | 
-| **CB**    | ACC&F1 | | |
+| **CB**    | ACC&F1 | 0.839 | |
 | **BoolQ** |   ACC  | | |
 ```
-python Run_GLUE.py --model base --task superGLUE --dataset CB --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+python Run_GLUE.py --model base --task superGLUE --dataset [DATASET] --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
 ```
-python Run_GLUE.py --model large --task superGLUE --dataset CB --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+python Run_GLUE.py --model large --task superGLUE --dataset [DATASET] --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
-```
-python Run_GLUE.py --model base --task superGLUE --dataset BoolQ --len_d 192 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
-```
-```
-python Run_GLUE.py --model large --task superGLUE --dataset BoolQ --len_d 192 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
-```
+**[DATASET]** from {CB, BoolQ}

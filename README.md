@@ -46,7 +46,7 @@ python Run_GLUE.py --model large --task GLUE --dataset [DATASET] --dropout 0.1 -
 |**Dataset**| **Index** | **base** |**large**|
 |     --    |   --   |    --   |    --    | 
 | **CB**    | ACC&F1 | 0.839 | |
-| **BoolQ** |   ACC  | | |
+| **BoolQ** |   ACC  | 0.715 | |
 ```
 python Run_GLUE.py --model base --task superGLUE --dataset [DATASET] --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```

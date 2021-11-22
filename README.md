@@ -22,7 +22,7 @@ all ready
 |**Dataset**| **Index** | **base** |**large**|
 |     --    |   --   |    --   |    --    | 
 | **WNLI**  |   ACC  | 0.563 | 0.563 |
-| **RTE**   |   ACC  | | 0.747 |
+| **RTE**   |   ACC  | 0.671 | 0.747 |
 | **MRPC**  | ACC&F1 | 0.903 | 0.887 |
 | **STS-B** |   COR  | 0.885 |  |
 | **CoLA**  |   MCC  | 0.605 | |

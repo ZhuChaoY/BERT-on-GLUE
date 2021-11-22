@@ -1,9 +1,10 @@
 # BERT-on-GLUE
-An implementation of BERT finetuning on GLUE dataset by tensorflow.
+An implementation of BERT finetuning on GLUE and superGLUE(only CB and BoolQ) dataset by tensorflow.
 
 ## Reference
 (1) **BERT**: [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/pdf/1810.04805.pdf) (Code: https://github.com/google-research/bert)   
-(2) **GLUE**: [GLUE: A MULTI-TASK BENCHMARK AND ANALYSIS PLATFORM FOR NATURAL LANGUAGE UNDERSTANDING](https://arxiv.org/pdf/1804.07461v2.pdf)
+(2) **GLUE**: [GLUE: A MULTI-TASK BENCHMARK AND ANALYSIS PLATFORM FOR NATURAL LANGUAGE UNDERSTANDING](https://arxiv.org/pdf/1804.07461v2.pdf)   
+(3) **superGlUE**: [SuperGLUE: A Stickier Benchmark for General-Purpose Language Understanding Systems](https://arxiv.org/pdf/1905.00537v3.pdf)   
 
 ## File
 ### Pretrained BERT
@@ -13,8 +14,11 @@ large/model.ckpt : download from https://storage.googleapis.com/bert_models/2018
 QQP/ : upzip the train.zip  
 MNLI/ : download the train.txt from https://dl.fbaipublicfiles.com/glue/data/MNLI.zip   
 **else**/ : all ready
+### superGLUE   
+all ready   
 
-## Results (on GLUE dev) 
+## Results 
+### GLUE (dev) 
 |**Dataset**| **Index** | **base** |**large**|
 |     --    |   --   |    --   |    --    | 
 | **WNLI**  |   ACC  | 0.563 | |
@@ -36,3 +40,10 @@ python Run_GLUE.py --model base --dataset [DATASET] --len_d 128 --dropout 0.1 --
 python Run_GLUE.py --model large --dataset [DATASET] --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
 **[DATASET]** from {WNLI, RTE, MRPC, STS-B, CoLA, SST-2, QNLI, QQP, MNLI}
+
+
+### superGLUE (dev) 
+|**Dataset**| **Index** | **base** |**large**|
+|     --    |   --   |    --   |    --    | 
+| **CB**    |   ACC  | | |
+| **BoolQ** | ACC&F1 | | |

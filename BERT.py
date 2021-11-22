@@ -35,7 +35,7 @@ class BERT():
         if not exists(self.out_dir):
             makedirs(self.out_dir)
                             
-        with open(self.model_dir + 'config.json') as file:
+        with open(self.model_dir + 'bert_config.json') as file:
             config = json.load(file)
             self.dropout = config['hidden_dropout_prob']
             self.hidden = config['hidden_size']
@@ -335,7 +335,7 @@ class BERT():
                for v in tf.trainable_variables()]
         
         if mode == 'train':
-            p = self.model_dir + 'model.ckpt'         
+            p = self.model_dir + 'bert_model.ckpt'         
             ivs = {v[0]: v[0] for v in tf.train.list_variables(p) 
                    if v[0] in tvs and 'bert' in v[0]}
         elif mode == 'predict':

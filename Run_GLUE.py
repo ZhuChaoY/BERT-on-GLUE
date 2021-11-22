@@ -37,4 +37,3 @@ config.gpu_options.allow_growth = True
 
 model = BERT(args)
 model.run(config)
-    

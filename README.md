@@ -11,7 +11,7 @@ base/model.ckpt  : download from https://storage.googleapis.com/bert_models/2018
 large/model.ckpt : download from https://storage.googleapis.com/bert_models/2018_10_18/uncased_L-24_H-1024_A-16.zip  
 ### GLUE
 QQP/ : upzip the train.zip  
-MNLI/ : download the train.txt from https://dl.fbaipublicfiles.com/glue/data/MNLI.zip 
+MNLI/ : download the train.txt from https://dl.fbaipublicfiles.com/glue/data/MNLI.zip   
 **else**/ : all ready
 
 ## Results (on GLUE dev) 

@@ -21,17 +21,17 @@ all ready
 ### GLUE (dev) 
 |**Dataset**| **Index** | **base** |**large**|
 |     --    |   --   |    --   |    --    | 
-| **WNLI**  |   ACC  | 0.563 | |
-| **RTE**   |   ACC  | 0.693 | |
-| **MRPC**  | ACC&F1 | 0.885 | |
-| **STS-B** |   COR  | 0.879 | |
-| **CoLA**  |   MCC  | 0.575 | 0.621 |
-| **SST-2** |   ACC  | 0.925 | 0.942 |
-| **QNLI**  |   ACC  | 0.891 | 0.918 |
-| **QQP**   | ACC&F1 | 0.894 | |
-| **MNLI**  |   ACC  | 0.835 | |
-| **Mean (without WNLI)**  | \ | 0.822 | |
-| **Mean**  | \ | 0.793 | |
+| **WNLI**  |   ACC  | 0.563 | 0.563 |
+| **RTE**   |   ACC  | | 0.747 |
+| **MRPC**  | ACC&F1 | 0.903 | 0.887 |
+| **STS-B** |   COR  | 0.885 |  |
+| **CoLA**  |   MCC  | 0.605 | |
+| **SST-2** |   ACC  | 0.922 | |
+| **QNLI**  |   ACC  | 0.905 | |
+| **QQP**   | ACC&F1 | | |
+| **MNLI**  |   ACC  | | |
+| **Mean (without WNLI)**  | \ | | |
+| **Mean**  | \ | | |
 
 ```
 python Run_GLUE.py --model base --task GLUE --dataset [DATASET] --len_d 128 --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1

@@ -27,7 +27,7 @@ all ready
 | **STS-B** |   COR  | 0.885 |  |
 | **CoLA**  |   MCC  | 0.605 | |
 | **SST-2** |   ACC  | 0.922 | |
-| **QNLI**  |   ACC  | 0.905 | |
+| **QNLI**  |   ACC  | 0.905 | 0.915 |
 | **QQP**   | ACC&F1 | 0.895 | |
 | **MNLI**  |   ACC  | 0.836 | |
 | **Mean (without WNLI)**  | \ | 0.828 | |

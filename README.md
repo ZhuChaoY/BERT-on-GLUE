@@ -28,10 +28,10 @@ all ready
 | **CoLA**  |   MCC  | 0.605 | |
 | **SST-2** |   ACC  | 0.922 | |
 | **QNLI**  |   ACC  | 0.905 | |
-| **QQP**   | ACC&F1 | | |
-| **MNLI**  |   ACC  | | |
-| **Mean (without WNLI)**  | \ | | |
-| **Mean**  | \ | | |
+| **QQP**   | ACC&F1 | 0.895 | |
+| **MNLI**  |   ACC  | 0.836 | |
+| **Mean (without WNLI)**  | \ | 0.828 | |
+| **Mean**  | \ | 0.798 | |
 
 ```
 python Run_GLUE.py --model base --task GLUE --dataset [DATASET] --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1

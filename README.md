@@ -29,7 +29,7 @@ all ready
 | **SST-2** |   ACC  | 0.922 | |
 | **QNLI**  |   ACC  | 0.905 | 0.915 |
 | **QQP**   | ACC&F1 | 0.895 | 0.900 |
-| **MNLI**  |   ACC  | 0.836 | |
+| **MNLI**  |   ACC  | 0.836 | 0.860 |
 | **Mean (without WNLI)**  | \ | 0.828 | |
 | **Mean**  | \ | 0.798 | |
 

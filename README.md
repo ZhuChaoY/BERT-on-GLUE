@@ -25,13 +25,13 @@ all ready
 | **RTE**   |   ACC  | 0.671 | 0.747 |
 | **MRPC**  | ACC&F1 | 0.903 | 0.887 |
 | **STS-B** |   COR  | 0.885 | 0.879 |
-| **CoLA**  |   MCC  | 0.605 | |
+| **CoLA**  |   MCC  | 0.605 | 0.641 |
 | **SST-2** |   ACC  | 0.922 | 0.928 |
 | **QNLI**  |   ACC  | 0.905 | 0.915 |
 | **QQP**   | ACC&F1 | 0.895 | 0.900 |
 | **MNLI**  |   ACC  | 0.836 | 0.860 |
-| **Mean (without WNLI)**  | \ | 0.828 | |
-| **Mean**  | \ | 0.798 | |
+| **Mean (without WNLI)**  | \ | 0.828 | 0.845 |
+| **Mean**  | \ | 0.798 | 0.813|
 
 ```
 python Run_GLUE.py --model base --task GLUE --dataset [DATASET] --dropout 0.1 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1

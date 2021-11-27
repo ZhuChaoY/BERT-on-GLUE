@@ -69,7 +69,6 @@ class BERT():
         """Construct BERT model."""
 
         print('\n    #length of sequence : {}'.format(self.len_d))        
-        print('    *Dropout_Rate       : {}'.format(self.dropout))
         print('    *Learning_Rate      : {}'.format(self.l_r))
         print('    *Batch_Size         : {}'.format(self.batch_size))
         print('    *Max_Epoch          : {}'.format(self.epoches))

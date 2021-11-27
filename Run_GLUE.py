@@ -16,8 +16,6 @@ parser.add_argument('--dataset', type = str, default = 'WNLI',
                     help = 'dataset name') 
 parser.add_argument('--len_d', type = int, default = 128,
                     help = 'length of sequence')
-parser.add_argument('--dropout', type = float, default = 0.1, 
-                    help = 'dropout rate')
 parser.add_argument('--l_r', type = float, default = 2e-5, 
                     help = 'learning rate')
 parser.add_argument('--batch_size', type = int, default = 32, 

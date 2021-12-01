@@ -48,9 +48,14 @@ python Run_GLUE.py --model large --task GLUE --dataset [DATASET] --l_r 2e-5 --ba
 | **CB**    | ACC&F1 | 0.839 | 0.929 |
 | **BoolQ** |   ACC  | 0.747 | 0.775 |
 ```
-python Run_GLUE.py --model base --task superGLUE --dataset [DATASET] --len_d 192 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+python Run_GLUE.py --model base --task superGLUE --dataset CB --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
 ```
-python Run_GLUE.py --model large --task superGLUE --dataset [DATASET] --len_d 192 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+python Run_GLUE.py --model base --task superGLUE --dataset BoolQ --len_d 192 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
 ```
-**[DATASET]** from {CB, BoolQ}
+```
+python Run_GLUE.py --model large --task superGLUE --dataset CB --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+```
+```
+python Run_GLUE.py --model large --task superGLUE --dataset BoolQ --len_d 192 --l_r 2e-5 --batch_size 32 --epoches 10 --earlystop 1
+```
